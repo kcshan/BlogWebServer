@@ -15,6 +15,7 @@ router.get('/list', (req, res, next) => {
       if (req.session.username == null) {
         // 未登录
         res.json(new ErrorModel('未登录'))
+        return 
       }
       author = req.session.usernames
     }
@@ -51,7 +52,7 @@ router.post('/update', loginCheck, (req, res, next) => {
     if (val) {
       res.json(new SuccessModel())
     } else {
-      res.json(new SuccessModel("更新博客失败"))
+      res.json(new ErrorModel("更新博客失败"))
     }
   })
 
@@ -65,7 +66,7 @@ router.post('/del', loginCheck, (req, res, next) => {
     if (val) {
       res.json(new SuccessModel())
     } else {
-      res.json(new SuccessModel("删除博客失败"))
+      res.json(new ErrorModel("删除博客失败"))
     }
   })
 

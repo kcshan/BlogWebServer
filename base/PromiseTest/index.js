@@ -51,11 +51,45 @@ function getFileContent(fileName) {
 }
 
 getFileContent("a.json").then(aData => {
-  console.log("a.data", aData)
+  console.log("a data", aData)
   return getFileContent(aData.next)
 }).then(bData => {
-  console.log("b.data", bData)
+  console.log("b data", bData)
   return getFileContent(bData.next)
 }).then(cData => {
-  console.log("c.data", cData)
+  console.log("c data", cData)
 })
+
+async function readFileData() {
+  // 返回的是一个promise，await后面跟一个promise 可以把promise里面的resolve内容直接取出来复制给aData
+  // 同步写法
+  try {
+    const aData = await getFileContent("a.json")
+    console.log("a data", aData)
+    const bData = await getFileContent(aData.next)
+    console.log("b data", bData)
+    const cData = await getFileContent(bData.next)
+    console.log("c data", cData)
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+readFileData()
+
+async function readAdata() {
+  const aData = await getFileContent("a.json")
+  return aData
+}
+
+async function test() {
+  const aData = await readAdata()
+  console.log(aData)
+}
+test()
+
+// async await要点：
+// 1. await后面可以追加promise对象
+// 2. await必须包裹在async函数里面
+// 3. async函数执行返回的也是一个promise对象
+// 4. try-catch截获promise中reject的值
